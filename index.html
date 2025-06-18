@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FRIDAY</title>
+<style>
+    body {
+    margin: 0;
+    padding: 0;
+    background: radial-gradient(ellipse at center, #000000 0%, #0f1b2a 100%);
+    height: 100vh;
+    color: #00ffff;
+    font-family: 'Orbitron', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-image: url(new.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    }
+
+    h1 {
+    font-size: 3rem;
+    text-shadow: 0 0 10px #00ffff;
+    }
+
+    .circle {
+    border: 2px solid #00ffff;
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    margin: 20px;
+    position: relative;
+    box-shadow: 0 0 20px #00ffff;
+    animation: pulse 2s infinite ease-in-out;
+    }
+    .img{
+        background-image: url(gogo1img.jpg);
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    @keyframes pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 20px #00ffff; }
+    50% { transform: scale(1.1); box-shadow: 0 0 40px #00ffff; }
+    }
+
+    button {
+    padding: 1rem 2rem;
+    background: transparent;
+    border: 2px solid #00ffff;
+    color: #00ffff;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    }
+
+    button:hover {
+    background: #00ffff;
+    color: #000;
+    }
+
+    p {
+    color: #ccc;
+    margin-top: 20px;
+    text-align: center;
+    max-width: 500px;
+    }
+</style>
+</head>
+<body>
+
+<h1>GOJO</h1>
+<div class="circle"><div class="img"></div></div>
+<button onclick="activateFRIDAY()">Click for Activate GOJO</button>
+<p>Say things like: "Open YouTube", "Open Google", "Open Instagram"</p>
+
+<script>
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    function speak(text, maleVoice = true) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "en-GB";
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    utterance.volume = 1;
+
+    const voices = window.speechSynthesis.getVoices();
+    const selected = voices.find(v =>
+        maleVoice
+        ? (v.name.toLowerCase().includes("english") && v.name.toLowerCase().includes("male")) || v.name.includes("David")
+        : v.name.toLowerCase().includes("female") || v.name.includes("Google UK English Female")
+    );
+
+    if (selected) utterance.voice = selected;
+    window.speechSynthesis.speak(utterance);
+    }
+
+    function activateFRIDAY() {
+    speak("Greetings sir. I am  GOJO, your virtual assistant. How may I help you?", true);
+
+    if (!SpeechRecognition) {
+        alert("Speech recognition is not supported in your browser.");
+        //return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-GB";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.start();
+
+    recognition.onresult = (event) => {
+        const command = event.results[0][0].transcript.toLowerCase();
+        console.log("FRIDAY heard:", command);
+
+        if (command.includes("open youtube")) {
+        speak("Accessing YouTube now.");
+        window.open("https://www.youtube.com", "_blank");
+        } 
+        else if (command.includes("open google")) {
+        speak("Launching Google.");
+        window.open("https://www.google.com", "_blank");
+        } 
+        else if (command.includes("open instagram")) {
+        speak("Opening Instagram.");
+        window.open("https://www.instagram.com", "_blank");
+        } 
+        else if (command.includes("what is your name")) {
+        speak("My name is GOJO. Fully Reliable Intelligent Digital Assistant Yield.");
+        } 
+        else {
+        speak("I'm sorry sir, I didn't quite catch that.");
+        }
+    };
+
+    recognition.onerror = (e) => {
+        console.error("Error:", e);
+        speak("Apologies sir. There was a problem with the recognition.");
+    };
+
+    recognition.start();
+    }
+
+    // Preload voices
+    window.speechSynthesis.onvoiceschanged = () => {
+    speechSynthesis.getVoices();
+    };
+</script>
+
+<!-- Optional: Orbitron font for sci-fi look -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+</body>
+</html>
